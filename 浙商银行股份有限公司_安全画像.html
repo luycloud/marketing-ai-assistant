@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>浙商银行股份有限公司 - 安全画像报告</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --primary: #1a6ef5; --primary-light: #0ea5e9; --primary-bg: #eef5ff;
+      --text-dark: #1e2a3b; --text-gray: #64748b; --text-light: #94a3b8;
+      --bg: #f1f5f9; --card: #fff; --border: #e2e8f0;
+      --green: #22c55e; --yellow: #f59e0b; --orange: #f97316;
+      --red: #ef4444; --blue: #3b82f6; --purple: #8b5cf6;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,.08);
+      --shadow-md: 0 4px 12px rgba(0,0,0,.10);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text-dark); line-height: 1.65; }
+    .confidential { background: linear-gradient(90deg, #c0182d, #e53e3e); color: #fff; text-align: center; padding: 9px 0; font-weight: 700; font-size: 13px; letter-spacing: 4px; position: sticky; top: 0; z-index: 200; box-shadow: 0 2px 6px rgba(192,24,45,.25); }
+    .container { max-width: 1380px; margin: 0 auto; padding: 24px 20px 56px; }
+    .cover { background: linear-gradient(135deg, #0f2460 0%, #1a4fc4 45%, #0ea5e9 100%); color: #fff; border-radius: 20px; padding: 52px 48px 44px; position: relative; overflow: hidden; box-shadow: 0 8px 32px rgba(26,110,245,.30); margin-bottom: 28px; }
+    .cover::before { content: ''; position: absolute; top: -120px; right: -80px; width: 480px; height: 480px; background: rgba(255,255,255,.06); border-radius: 50%; pointer-events: none; }
+    .cover::after { content: ''; position: absolute; bottom: -80px; left: 30%; width: 300px; height: 300px; background: rgba(14,165,233,.15); border-radius: 50%; pointer-events: none; }
+    .cover > * { position: relative; z-index: 1; }
+    .cover h1 { font-size: 38px; font-weight: 800; margin-bottom: 6px; text-shadow: 0 2px 8px rgba(0,0,0,.2); }
+    .cover .subtitle { font-size: 15px; opacity: .9; margin-bottom: 8px; }
+    .cover-meta-block { margin-bottom: 32px; }
+    .cover-meta-line { font-size: 12px; opacity: .72; line-height: 1.6; margin-bottom: 2px; }
+    .cover-meta-block .sourcing { font-size: 12px; opacity: .58; margin-top: 6px; line-height: 1.5; font-style: italic; }
+    .score-cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+    .score-card { background: rgba(255,255,255,.12); backdrop-filter: blur(12px); border-radius: 14px; padding: 20px 16px; text-align: center; border: 1px solid rgba(255,255,255,.22); }
+    .score-card .label { font-size: 12px; opacity: .85; margin-bottom: 10px; letter-spacing: 1px; }
+    .score-card .score-val { font-size: 22px; font-weight: 700; color: #fff; }
+    .score-card .level { font-size: 11px; margin-top: 8px; opacity: .8; }
+    .cover-score-lvl, .kpi-lvl { display: inline-block; padding: 4px 12px; border-radius: 10px; font-size: 18px; font-weight: 700; line-height: 1.2; color: #fff; }
+    .kpi-lvl { font-size: 16px; color: inherit; }
+    .status-L1 { background: #fee2e2; color: #991b1b; }
+    .status-L2 { background: #ffedd5; color: #9a3412; }
+    .status-L3 { background: #fef9c3; color: #854d0e; }
+    .status-L4 { background: #DBEAFE; color: #1E40AF; }
+    .status-L5 { background: #F0FDF4; color: #166534; }
+    .status-NA { background: #f1f5f9; color: #64748b; }
+    .cover .status-L1 { background: #dc2626; color: #fff; }
+    .cover .status-L2 { background: #ea580c; color: #fff; }
+    .cover .status-L3 { background: #d97706; color: #fff; }
+    .cover .status-L4 { background: #2563eb; color: #fff; }
+    .cover .status-L5 { background: #16a34a; color: #fff; }
+    .cover .status-NA { background: rgba(255,255,255,.25); color: rgba(255,255,255,.9); }
+    .cover-levels { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px 8px; margin-top: 18px; width: 100%; }
+    .cover-level-item { display: flex; align-items: flex-start; gap: 5px; background: rgba(255,255,255,.10); padding: 5px 8px; border-radius: 5px; border: 1px solid rgba(255,255,255,.15); }
+    .level-badge { flex-shrink: 0; font-size: 9px; font-weight: 700; padding: 1px 4px; border-radius: 4px; margin-top: 1px; color: #fff; }
+    .level-desc { font-size: 10px; color: rgba(255,255,255,.88); line-height: 1.35; }
+    .section, .executive-summary, .action-toc { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 32px 36px; box-shadow: var(--shadow-sm); margin-bottom: 20px; }
+    .section-title { font-size: 18px; font-weight: 700; color: var(--text-dark); margin-bottom: 24px; display: flex; align-items: center; gap: 10px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .section-title .icon { width: 36px; height: 36px; background: var(--primary-bg); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    h2 { font-size: 20px; margin-bottom: 20px; color: var(--text-dark); }
+    h3 { font-size: 16px; margin: 18px 0 10px; }
+    p { margin-bottom: 10px; }
+    ul { padding-left: 20px; }
+    .exec-subtitle-text { font-size: 14px; margin-bottom: 20px; color: var(--text-dark); opacity: .9; }
+    .priority-matrix { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 16px; }
+    .summary-kpis, .metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 16px 0 20px; }
+    .priority-box, .summary-kpi, .metric-card, .eval-card { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+    .priority-high { background: rgba(239,68,68,.12); border: 1px solid rgba(239,68,68,.25); }
+    .priority-med { background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.25); }
+    .priority-purple-tint { background: rgba(139,92,246,.15); border: 1px solid rgba(139,92,246,.25); }
+    .priority-box h4 { font-size: 14px; margin-bottom: 8px; }
+    .priority-box ul { list-style: none; padding-left: 0; font-size: 13px; }
+    .priority-box li { padding: 3px 0; }
+    .summary-kpi { text-align: center; }
+    .kpi-value { font-size: 18px; font-weight: 700; color: var(--primary); }
+    .kpi-label { font-size: 12px; color: var(--text-gray); margin-top: 4px; }
+    .findings-card { background: var(--bg); border-radius: 12px; padding: 18px 20px; border: 1px solid var(--border); }
+    .findings-card h3 { font-size: 15px; color: var(--text-dark); margin-top: 0; }
+    .finding-item { display: flex; gap: 8px; align-items: flex-start; padding: 6px 0; font-size: 13px; }
+    .finding-icon { font-size: 16px; flex-shrink: 0; }
+    .toc-header { display: flex; align-items: baseline; gap: 8px; padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 14px; }
+    .toc-title { font-size: 18px; font-weight: 700; color: var(--text-dark); }
+    .toc-subtitle { font-size: 13px; color: var(--text-gray); }
+    .toc-links { display: flex; gap: 12px; flex-wrap: wrap; }
+    .toc-link { display: inline-block; padding: 10px 22px; border-radius: 10px; color: var(--primary); background: #d0e3f4; text-decoration: none; font-size: 15px; font-weight: 700; cursor: pointer; transition: transform .2s, box-shadow .2s; }
+    .toc-link:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .assessment-layout { display: flex; gap: 36px; align-items: center; margin-bottom: 24px; flex-wrap: wrap; }
+    .assess-radar { flex-shrink: 0; width: 460px; max-width: 100%; }
+    .assess-content { flex: 1; min-width: 320px; }
+    .eval-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 20px; }
+    .eval-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .eval-header h3 { font-size: 15px; font-weight: 700; margin: 0; }
+    .eval-status { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+    .eval-status-text { font-size: 13px; line-height: 1.7; margin-bottom: 10px; color: var(--text-dark); }
+    .eval-problems { font-size: 13px; line-height: 1.7; margin-bottom: 10px; color: var(--text-gray); background: #fff; padding: 10px; border-radius: 8px; border: 1px solid var(--border); }
+    .eval-risk { font-size: 13px; line-height: 1.7; margin-bottom: 10px; color: #7f1d1d; background: #fff7ed; padding: 10px; border-radius: 8px; border: 1px solid #fed7aa; }
+    .eval-improvement { font-size: 13px; line-height: 1.7; color: var(--primary); background: var(--primary-bg); padding: 10px; border-radius: 8px; border-left: 3px solid var(--primary); }
+    .eval-evidence-note { font-size: 12px; line-height: 1.7; margin-top: 8px; color: var(--text-light); }
+    .gap-line { padding: 6px 0; font-size: 13px; color: var(--text-dark); }
+    .gap-line:last-child { border-bottom: none; }
+    .data-table { width: 100%; border-collapse: collapse; table-layout: fixed; margin-top: 12px; background: #fff; }
+    .data-table th { background: var(--bg); padding: 10px 12px; text-align: left; font-weight: 600; font-size: 13px; color: var(--text-gray); border-bottom: 2px solid var(--border); }
+    .data-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: top; overflow-wrap: anywhere; word-break: break-word; }
+    .data-table tr:hover td { background: var(--primary-bg); }
+    .table-link { color: var(--primary); font-weight: 700; text-decoration: none; white-space: nowrap; }
+    .table-link:hover { text-decoration: underline; }
+    .ability-tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; background: var(--primary-bg); color: var(--primary); margin: 2px 4px 2px 0; }
+    .highlight-box { background: var(--primary-bg); border-left: 4px solid var(--primary); border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .highlight-box p { font-size: 14px; color: var(--text-dark); margin-bottom: 0; }
+    .source-list { list-style: none; padding-left: 0; }
+    .source-list li { padding: 8px 0; font-size: 13px; border-bottom: 1px solid var(--border); }
+    .muted { color: var(--text-gray); font-size: 13px; }
+    .empty { color: var(--text-light); font-size: 13px; padding: 12px; background: var(--bg); border-radius: 8px; }
+    .assessment-narrative h3 { font-size: 15px; margin: 0 0 8px; color: var(--text-dark); font-weight: 800; }
+    .assessment-narrative p { font-size: 14px; line-height: 1.9; color: var(--text-gray); margin-bottom: 20px; }
+    .gap-quick-view { margin-top: 4px; }
+    .gap-quick-view h3 { font-size: 15px; margin: 0 0 8px; color: var(--text-dark); font-weight: 800; }
+    .gap-quick-view ul { list-style: none; margin: 0; padding-left: 0; border-top: 1px dashed var(--border); }
+    .gap-quick-view li { padding: 10px 0; border-bottom: 1px dashed var(--border); font-size: 14px; line-height: 1.8; color: var(--text-dark); }
+    .gap-quick-view .gap-alert { color: var(--red); font-weight: 800; margin-right: 6px; }
+    .gap-quick-view strong { color: var(--red); }
+    .collapsed-table { margin-top: 10px; overflow-x: auto; }
+    .collapsed-table summary { cursor: pointer; color: var(--primary); font-weight: 700; font-size: 13px; padding: 10px 12px; background: var(--primary-bg); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; }
+    .collapsed-table .data-table { margin-top: 0; }
+    @media (max-width: 900px) {
+      .score-cards, .priority-matrix, .summary-kpis, .metric-grid { grid-template-columns: 1fr; }
+      .eval-grid { grid-template-columns: 1fr; }
+      .toc-links { flex-direction: column; }
+      .cover { padding: 36px 24px; }
+      .cover h1 { font-size: 30px; }
+      .cover-levels { grid-template-columns: 1fr; }
+      .data-table { min-width: 760px; }
+      .section { overflow-x: auto; }
+    }
+  </style>
+  <script>
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  </script>
+</head>
+<body>
+  <div class="confidential">内部参考资料，请勿外传</div>
+  <div class="container">
+    <div class="cover">
+      <h1>浙商银行股份有限公司</h1>
+      <p class="subtitle">网络安全全景画像分析报告 | 金融-银行</p>
+      <div class="cover-meta-block">
+        <div class="cover-meta-line">报告生成时间：2026-07-31 · 数据截至：2026-07-31</div>
+        <div class="cover-meta-line">数据来源：标讯平台、合同系统、互联网公开搜索</div>
+        <div class="sourcing">咨询能力支撑：评估模型与规则逻辑由《AI安服数字员工-数字化安全咨询评估助手》提供</div>
+      </div>
+      <div class="score-cards"><div class="score-card"><div class="label">基础安全防护</div><div class="score-val"><span class="cover-score-lvl status-L3">L3</span></div><div class="level">主动监测级</div></div><div class="score-card"><div class="label">安全运营</div><div class="score-val"><span class="cover-score-lvl status-L3">L3</span></div><div class="level">主动监测级</div></div><div class="score-card"><div class="label">数据安全</div><div class="score-val"><span class="cover-score-lvl status-L2">L2</span></div><div class="level">被动防御级</div></div><div class="score-card"><div class="label">安全开发</div><div class="score-val"><span class="cover-score-lvl status-L1">L1</span></div><div class="level">基础合规级</div></div><div class="score-card"><div class="label">AI安全</div><div class="score-val"><span class="cover-score-lvl status-L1">L1</span></div><div class="level">基础合规级</div></div></div>
+      <div class="cover-levels">
+        <div class="cover-level-item"><span class="level-badge status-L1">L1</span><span class="level-desc">基础合规级：安全建设刚起步，尚未形成体系</span></div>
+        <div class="cover-level-item"><span class="level-badge status-L2">L2</span><span class="level-desc">被动防御级：部署若干安全能力，但协同不足</span></div>
+        <div class="cover-level-item"><span class="level-badge status-L3">L3</span><span class="level-desc">主动监测级：具备统一发现和运营能力</span></div>
+        <div class="cover-level-item"><span class="level-badge status-L4">L4</span><span class="level-desc">主动防御级：纵深防御和响应闭环较成熟</span></div>
+        <div class="cover-level-item"><span class="level-badge status-L5">L5</span><span class="level-desc">智能化运营级：AI 驱动，行业领先</span></div>
+      </div>
+    </div>
+
+    <section class="executive-summary" id="sec-summary">
+      <h2>客户画像速览</h2>
+      <p class="exec-subtitle-text">浙商银行股份有限公司为浙江杭州银行业金融机构，当前报告已基于 44 条标讯、77 条合同和公开资料形成。核心机会集中在安全运营、数据安全治理、基础防护扩容和安全开发/AI安全增量议题。</p>
+      <div class="priority-matrix"><div class="priority-box priority-high"><h4>高优切入（短板补齐）</h4><ul><li>先完成 AI 应用资产盘点和使用场景访谈，确认是否具备大模型安全评估或防护切入条件。</li><li>结合源代码安全审计推动研发安全从项目制测试升级为上线前持续门禁。</li><li>基于数据库审计系统（DAS）、数据防泄漏（DLP）、大数据智能安全平台推进数据分类分级、数据库审计、脱敏和 API 安全治理的落地核验。</li></ul></div><div class="priority-box priority-med"><h4>能力跃升（等级跨越）</h4><ul><li>基于Web应用防火墙（WAF）、堡垒机、运维安全管理平台等基础防护投入，重点推进持续加固、策略优化和资产暴露面复核。</li><li>将安全编排自动化与响应（SOAR）、安全分析与管理平台（SIEM/SOC）、攻防演练组织沉淀为持续运营指标，推动告警研判、响应处置和复盘改进闭环。</li></ul></div><div class="priority-box priority-med priority-purple-tint"><h4>持续优化（成熟度精进）</h4><ul><li>持续跟踪最新标讯和合同变化，动态校正当前 5 个已有证据维度的成熟度判断。</li><li>对Web应用防火墙（WAF）、堡垒机等存量能力做续约、扩容和运营效果复盘。</li></ul></div></div>
+      <div class="summary-kpis"><div class="summary-kpi"><div class="kpi-value"><span class="kpi-lvl status-L3">L3</span></div><div class="kpi-label">整体安全成熟度</div></div><div class="summary-kpi"><div class="kpi-value">50</div><div class="kpi-label">已识别产品/服务</div></div><div class="summary-kpi"><div class="kpi-value">11</div><div class="kpi-label">建议动作数量</div></div><div class="summary-kpi"><div class="kpi-value">5</div><div class="kpi-label">公开来源数量</div></div></div>
+      <div class="findings-card">
+        <h3>关键发现</h3>
+        <div class="finding-item"><span class="finding-icon">🔑</span><span><strong>证据样本与建设节奏：</strong>已采集标讯 44 条、合同 77 条，标讯高频主题包括防火墙、维保、信创、数据安全、分类分级、驻场，说明客户具备持续安全投入基础。</span></div><div class="finding-item"><span class="finding-icon">🔑</span><span><strong>基础防护证据判断：</strong>标讯/合同中出现Web应用防火墙（WAF）、堡垒机、运维安全管理平台、网络审计系统、日志管理与分析平台线索，基础安全防护当前可按 L3 研判。</span></div><div class="finding-item"><span class="finding-icon">🔑</span><span><strong>安全运营证据判断：</strong>已识别安全编排自动化与响应（SOAR）、安全分析与管理平台（SIEM/SOC）、攻防演练组织、资产发现与管理平台、SOC/安全运营相关线索，后续适合围绕 SOC/SIEM、SOAR 和持续运营服务形成组合方案。</span></div><div class="finding-item"><span class="finding-icon">🔑</span><span><strong>数据安全证据判断：</strong>已有数据库审计系统（DAS）、数据防泄漏（DLP）、大数据智能安全平台、数据分类分级等线索，可进一步从风险评估、DSMP、数据库审计和 API 安全治理推进。</span></div><div class="finding-item"><span class="finding-icon">🔑</span><span><strong>合同数据可用性：</strong>合同记录覆盖 2010-2024，其中可展示合同 75 条，可优先围绕维保续约、能力扩容和咨询服务升级做存量客户深挖。</span></div><div class="finding-item"><span class="finding-icon">🔑</span><span><strong>安全开发与 AI 安全适合作为增量议题：</strong>安全开发已有源代码安全审计线索；AI 安全已有大模型安全垂域系统、大模型线索，建议作为增量议题谨慎切入。</span></div>
+      </div>
+    </section>
+
+    <nav class="action-toc">
+      <div class="toc-header"><span class="toc-title">全文导航</span><span class="toc-subtitle">点击卡片跳转</span></div>
+      <div class="toc-links"><a class="toc-link" onclick="scrollToSection('sec-overview')">客户概览</a><a class="toc-link" onclick="scrollToSection('sec-assessment')">安全成熟度评估</a><a class="toc-link" onclick="scrollToSection('sec-history')">历史项目统计</a><a class="toc-link" onclick="scrollToSection('sec-recommendations')">采购建议</a><a class="toc-link" onclick="scrollToSection('sec-sources')">数据来源</a></div>
+    </nav>
+
+    <section class="section" id="sec-overview">
+      <div class="section-title"><span class="icon">🏛</span>客户概览</div>
+      <div class="metric-grid"><div class="metric-card"><div class="muted">客户名称</div><strong>浙商银行股份有限公司</strong></div><div class="metric-card"><div class="muted">所属行业</div><strong>金融-银行</strong></div><div class="metric-card"><div class="muted">地域定位</div><strong>浙江杭州</strong></div><div class="metric-card"><div class="muted">客户类型</div><strong>银行业金融机构</strong></div></div><p>浙商银行股份有限公司属于银行业金融机构，地域定位为浙江杭州，行业归类为金融-银行。本报告基于内部标讯、合同和互联网公开搜索资料形成，用于售前研判、成熟度评估和行动规划。</p><h3>组织与业务线索</h3><ul><li>总部/主要经营区域：浙江杭州</li><li>机构类型：银行业金融机构</li><li>业务与组织细节仍需结合客户访谈、官网公开资料和内部客户档案进一步校验。</li></ul>
+    </section>
+
+    <section class="section" id="sec-assessment">
+      <div class="section-title"><span class="icon">🛡</span>安全成熟度评估</div>
+      <div class="assessment-layout">
+        <div class="assess-radar"><canvas id="maturityRadar"></canvas></div>
+        <div class="assess-content"><div class="assessment-narrative"><h3>综合解读</h3><p>当前能力呈现“基础安全防护相对成熟、安全开发优先补齐”的格局。基础安全防护方面，已在标讯、合同或公开资料中识别到Web应用防火墙（WAF）、堡垒机、运维安全管理平台、网络审计系统、日志管理与分析平台等建设线索。；安全开发方面，已有源代码安全审计等线索，但上线前安全评估、供应链安全审查、研发流水线安全门禁仍需核验覆盖范围、联动关系和持续运营机制。。建议把成熟度等级作为方向判断，并结合客户访谈进一步确认部署范围、联动关系和运营效果。</p></div><div class="gap-quick-view"><h3>核心缺口速览</h3><ul><li><span class="gap-alert">⚠</span><strong>数据安全：</strong>已有数据库审计系统（DAS）、数据防泄漏（DLP）、大数据智能安全平台、数据分类分级等线索，但DSMP统一管控、API安全治理仍需核验覆盖范围、联动关系和持续运营机制。 风险：敏感数据流向、接口访问和数据库操作缺少统一审计时，数据泄露、越权访问和合规整改风险会持续累积。</li><li><span class="gap-alert">⚠</span><strong>安全开发：</strong>已有源代码安全审计等线索，但上线前安全评估、供应链安全审查、研发流水线安全门禁仍需核验覆盖范围、联动关系和持续运营机制。 风险：安全测试后置到上线或运行阶段时，代码缺陷、开源组件漏洞和供应链风险会抬高修复成本。</li><li><span class="gap-alert">⚠</span><strong>AI安全：</strong>已有大模型安全垂域系统、大模型等线索，但AI应用资产盘点、模型风险评估、AI运行监测与合规审计仍需核验覆盖范围、联动关系和持续运营机制。 风险：AI应用资产、模型输入输出和运行行为不可视时，提示注入、敏感数据泄露和模型合规风险难以及时治理。</li></ul></div></div>
+      </div>
+      <div class="eval-grid"><div class="eval-card"><div class="eval-header"><h3>基础安全防护</h3><span class="eval-status status-L3">L3 主动监测级</span></div><div class="eval-status-text"><strong>现状：</strong>已在标讯、合同或公开资料中识别到Web应用防火墙（WAF）、堡垒机、运维安全管理平台、网络审计系统、日志管理与分析平台等建设线索。</div><div class="eval-problems"><strong>能力缺口：</strong>已有Web应用防火墙（WAF）、堡垒机、运维安全管理平台、网络审计系统等线索，但EDR/终端检测响应、零信任访问、暴露面监测、常态化加固仍需核验覆盖范围、联动关系和持续运营机制。</div><div class="eval-risk"><strong>风险影响：</strong>终端、边界和暴露面风险处置不闭环时，新增资产或漏洞暴露后容易形成可利用入口。</div><div class="eval-improvement"><strong>优化建议方向（基于成熟度）：</strong>在既有边界防护和维保基础上，优先补齐 EDR、零信任访问、暴露面监测和常态化安全加固服务。</div><div class="eval-evidence-note">证据来自基础安全防护相关标讯、合同或公开资料命中项，仍需客户访谈确认部署范围、使用状态和运营效果。</div></div><div class="eval-card"><div class="eval-header"><h3>安全运营</h3><span class="eval-status status-L3">L3 主动监测级</span></div><div class="eval-status-text"><strong>现状：</strong>已在标讯、合同或公开资料中识别到安全编排自动化与响应（SOAR）、安全分析与管理平台（SIEM/SOC）、攻防演练组织、资产发现与管理平台、SOC/安全运营等建设线索。</div><div class="eval-problems"><strong>能力缺口：</strong>已有安全编排自动化与响应（SOAR）、安全分析与管理平台（SIEM/SOC）、攻防演练组织、资产发现与管理平台等线索，但威胁情报仍需核验覆盖范围、联动关系和持续运营机制。</div><div class="eval-risk"><strong>风险影响：</strong>告警关联、响应编排和复盘指标不足时，事件发现与处置依赖人工经验，重大保障期间响应压力会明显上升。</div><div class="eval-improvement"><strong>优化建议方向（基于成熟度）：</strong>围绕安全运营平台、SOAR、日志分析、驻场运营和应急响应服务形成平台加服务闭环。</div><div class="eval-evidence-note">证据来自安全运营相关标讯、合同或公开资料命中项，仍需客户访谈确认部署范围、使用状态和运营效果。</div></div><div class="eval-card"><div class="eval-header"><h3>数据安全</h3><span class="eval-status status-L2">L2 被动防御级</span></div><div class="eval-status-text"><strong>现状：</strong>已在标讯、合同或公开资料中识别到数据库审计系统（DAS）、数据防泄漏（DLP）、大数据智能安全平台、数据分类分级、数据定级等建设线索。</div><div class="eval-problems"><strong>能力缺口：</strong>已有数据库审计系统（DAS）、数据防泄漏（DLP）、大数据智能安全平台、数据分类分级等线索，但DSMP统一管控、API安全治理仍需核验覆盖范围、联动关系和持续运营机制。</div><div class="eval-risk"><strong>风险影响：</strong>敏感数据流向、接口访问和数据库操作缺少统一审计时，数据泄露、越权访问和合规整改风险会持续累积。</div><div class="eval-improvement"><strong>优化建议方向（基于成熟度）：</strong>以数据安全风险评估和分类分级成果为基础，推进 DSMP、数据库审计和 API 安全治理。</div><div class="eval-evidence-note">证据来自数据安全相关标讯、合同或公开资料命中项，仍需客户访谈确认部署范围、使用状态和运营效果。</div></div><div class="eval-card"><div class="eval-header"><h3>安全开发</h3><span class="eval-status status-L1">L1 基础合规级</span></div><div class="eval-status-text"><strong>现状：</strong>已在标讯、合同或公开资料中识别到源代码安全审计等建设线索。</div><div class="eval-problems"><strong>能力缺口：</strong>已有源代码安全审计等线索，但上线前安全评估、供应链安全审查、研发流水线安全门禁仍需核验覆盖范围、联动关系和持续运营机制。</div><div class="eval-risk"><strong>风险影响：</strong>安全测试后置到上线或运行阶段时，代码缺陷、开源组件漏洞和供应链风险会抬高修复成本。</div><div class="eval-improvement"><strong>优化建议方向（基于成熟度）：</strong>从 SAST/SCA、上线前安全评估和安全功能测试切入，逐步建立 DevSecOps 连续服务机制。</div><div class="eval-evidence-note">证据来自安全开发相关标讯、合同或公开资料命中项，仍需客户访谈确认部署范围、使用状态和运营效果。</div></div><div class="eval-card"><div class="eval-header"><h3>AI安全</h3><span class="eval-status status-L1">L1 基础合规级</span></div><div class="eval-status-text"><strong>现状：</strong>已在标讯、合同或公开资料中识别到大模型安全垂域系统、大模型等建设线索。</div><div class="eval-problems"><strong>能力缺口：</strong>已有大模型安全垂域系统、大模型等线索，但AI应用资产盘点、模型风险评估、AI运行监测与合规审计仍需核验覆盖范围、联动关系和持续运营机制。</div><div class="eval-risk"><strong>风险影响：</strong>AI应用资产、模型输入输出和运行行为不可视时，提示注入、敏感数据泄露和模型合规风险难以及时治理。</div><div class="eval-improvement"><strong>优化建议方向（基于成熟度）：</strong>将 AI 安全作为新议题切入，先开展 AI 应用资产盘点和成熟度评估，再布局大模型安全防护。</div><div class="eval-evidence-note">证据来自AI安全相关标讯、合同或公开资料命中项，仍需客户访谈确认部署范围、使用状态和运营效果。</div></div></div>
+    </section>
+
+    <section class="section" id="sec-history">
+      <div class="section-title"><span class="icon">📊</span>历史项目统计</div>
+      <p>标讯数据共 44 条，时间覆盖 2023-2026，高频主题包括防火墙、维保、信创、数据安全、分类分级；内部合同共 77 条，其中可展示合同 75 条，合作记录覆盖 2010-2024。页面默认展示最新 5 条记录，最多内嵌最新 100 条，超出 5 条的部分折叠保留在 HTML 中，便于审计和展开查看。</p><div class="metric-grid"><div class="metric-card"><div class="kpi-value">44</div><div class="kpi-label">标讯记录</div></div><div class="metric-card"><div class="kpi-value">77</div><div class="kpi-label">合同原始记录</div></div><div class="metric-card"><div class="kpi-value">76</div><div class="kpi-label">可展示合同</div></div><div class="metric-card"><div class="kpi-value">5</div><div class="kpi-label">公开来源</div></div></div>
+      <h3>标讯明细（默认展示5条，其余折叠）</h3>
+      <table class="data-table"><colgroup><col style="width:34%"><col style="width:10%"><col style="width:13%"><col style="width:12%"><col style="width:19%"><col style="width:12%"></colgroup><thead><tr><th>项目名称</th><th>状态</th><th>产品类型</th><th>日期</th><th>采购单位</th><th>链接</th></tr></thead><tbody><tr><td>浙商银行国产化WAF软件框架及首次采购</td><td>招标中</td><td>招标公告</td><td>2026-07-24</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/Uw9CQQEQR1hSVgAIEEEBREFbAgdXWEJC.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙商银行2026年第一批网络设备维保服务采购</td><td>招标中</td><td>招标公告</td><td>2026-06-18</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/Uw9HQFxKEl9XAV0IQRJUQxJQUlcHXhBL.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙商银行分支机构DDI设备、防火墙、路由器、交换机框架采购</td><td>招标中</td><td>招标公告</td><td>2026-04-23</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1cRElRHRwpXAV0IQRJUQxJQVwQBDEcV.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙商银行国产化签名验签安全设备采购</td><td>招标中</td><td>招标公告</td><td>2026-04-03</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1cXFV1ATltXAV0IQRJUQxJQBVVTW0QQ.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙商银行数据安全分类分级平台采购</td><td>已中标</td><td>中标公告</td><td>2026-01-09</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1dCQwZBTl1SUlFaEkcGEEZbVFMAXxJL.html?appid" target="_blank" rel="noopener">查看</a></td></tr></tbody></table><details class="collapsed-table"><summary>展开剩余 39 条记录</summary><table class="data-table"><colgroup><col style="width:34%"><col style="width:10%"><col style="width:13%"><col style="width:12%"><col style="width:19%"><col style="width:12%"></colgroup><thead><tr><th>项目名称</th><th>状态</th><th>产品类型</th><th>日期</th><th>采购单位</th><th>链接</th></tr></thead><tbody><tr><td>浙商银行防火墙设备采购</td><td>招标中</td><td>招标公告</td><td>2025-12-22</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1dASlVHRwxRXAYKFUJTR0dbV1YBD0FA.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙商银行运维审计系统国产化堡垒机设备框架及首次采购</td><td>已中标</td><td>中标公告</td><td>2025-12-18</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1dAQAFGRg1RXAYKFUJTR0dbUFBQX0AR.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙商银行服务器接入网络负载均衡设备采购</td><td>招标中</td><td>招标公告</td><td>2025-12-12</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1dHEV1HFV5RXAYKFUJTR0dbUlBVXExH.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙商银行钓鱼邮件演练平台采购</td><td>已中标</td><td>中标公告</td><td>2025-11-12</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1dFQABGFV5RXAYKFUJTR0dbWlEGVxER.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙商银行信创传统网络扩容交换机采购</td><td>招标中</td><td>招标公告</td><td>2025-10-28</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1dEQ1IWRV1RXAYKFUJTR0dbVgFTWhAV.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙商银行钓鱼邮件演练平台采购项目</td><td>招标中</td><td>招标公告</td><td>2025-10-24</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1YSEVdKQFFRXAYKFUJTR0dbVldcWRBC.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>自主可控DLP客户端授权许可框架采购</td><td>招标中</td><td>招标公告</td><td>2025-08-07</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1ZNR1JEFVsHUAFWEUdVSkcPU1UEXhdK.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙商银行支付统计报送系统信创产品采购</td><td>招标中</td><td>招标公告</td><td>2025-08-06</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1ZNQFdATlgHUAFWEUdVSkcPBQZSXEFE.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙商银行股份有限公司深圳分行(搬迁)电子设备采购</td><td>招标中</td><td>招标公告</td><td>2025-07-11</td><td>浙商银行股份有限公司深圳分行</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1ZDQwZGRw8HUAFWEUdVSkcPWgBXChIR.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙商银行国产虚拟化软件采购</td><td>已中标</td><td>中标公告</td><td>2025-06-26</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1ZBF1QRQ19XA1ZbTEJXERIPV1YAVxZA.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>交换机、路由器、防火墙等网络设备采购</td><td>招标中</td><td>招标公告</td><td>2025-03-12</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1kQQwBKRl5QVlVXF0NcS04LWgEEXUAR.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>分支机构路由器、防火墙、无线设备等网络设备框架采购</td><td>招标中</td><td>招标公告</td><td>2025-02-26</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1kWFl1BRQtQVlVXF0NcS04LVlJcW00V.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙商银行股份有限公司等级保护测评服务项目</td><td>招标中</td><td>招标公告</td><td>2025-02-14</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1kVFgMQFFpQVlVXF0NcS04LUQZVWBJD.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>互联网系统持续性安全测试项目驻场服务框架入围</td><td>已中标</td><td>中标公告</td><td>2025-01-23</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1lNQgMQFA9QVlVXF0NcS04LBVIBWUJL.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙商银行新一代核心系统数据库选型采购项目</td><td>其他</td><td>其他</td><td>2025-01-21</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1lMFVMREgxQVlVXF0NcS04LBgNcDEJA.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>SSL安全网关设备框架采购</td><td>招标中</td><td>招标公告</td><td>2025-01-10</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1lMQwAQE19QVlVXF0NcS04LAFNVDEMV.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙商银行股份有限公司新建网银助手客户端及后台管理系统项目</td><td>招标中</td><td>招标公告</td><td>2024-12-31</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1lDQAYXFVlQVlVXF0NcS04LWgEBCENK.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>深信服上网行为管理系统设备与维保服务框架采购</td><td>招标中</td><td>招标公告</td><td>2024-12-24</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1lCEgQRT1pUAABdQRYDQEBeU11XD0NK.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙江省高院破产智审系统和案款系统应用安全认证网关设备采购项目</td><td>招标中</td><td>招标公告</td><td>2024-12-24</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1lCEl0UQwtXAVFcRBVTQEVbAABSDUNK.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>自动化代码安全扫描产品</td><td>招标中</td><td>招标公告</td><td>2024-11-12</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1lHQFdGTg8BV1ANRxZUFhMLUVxTXU1K.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>长沙分行新大楼内网使用网络设备采购</td><td>招标中</td><td>招标公告</td><td>2024-11-01</td><td>浙商银行股份有限公司长沙分行</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1lGRwZEFQoBV1ANRxZUFhMLBVRcVk1L.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>国产负载均衡设备及软件授权采购项目</td><td>其他</td><td>其他</td><td>2024-09-10</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1gQFQFLT1ABV1ANRxZUFhMLB1xSChBL.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙商银行股份有限公司国产负载均衡设备及软件授权采购项目</td><td>招标中</td><td>招标公告</td><td>2024-08-27</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1gXF1EQTlABV1ANRxZUFhMLWlZTXxJF.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>攻防演练攻击队服务厂商</td><td>已中标</td><td>中标公告</td><td>2024-08-23</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1gXS1MTQlwBV1ANRxZUFhMLW1NTXUdB.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙商银行股份有限公司攻防演练攻击队服务厂商</td><td>招标中</td><td>招标公告</td><td>2024-08-05</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1gWQwQWQ1hVUwYIRBcHRkQIAldRXRUS.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>WAF防护套包采购</td><td>已中标</td><td>中标公告</td><td>2024-04-28</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1hGFwAWEF9VUwYIRBcHRkQIB11TXhAQ.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙商银行股份有限公司WAF防护套包采购</td><td>已中标</td><td>中标公告</td><td>2024-04-28</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1hGFwAUFVpVUwYIRBcHRkQIB11TVxBG.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>WAF防护套包采购项目</td><td>招标中</td><td>招标公告</td><td>2024-04-15</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1hFEAMXE1hVUwYIRBcHRkQIWgZQCEwV.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>金融网络安全能力成熟度等级评价服务</td><td>已中标</td><td>中标公告</td><td>2024-04-10</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1hFRVNFT1lVUwYIRBcHRkQIW11cXkVL.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙商银行股份有限公司WAF防护套包采购项目</td><td>招标中</td><td>招标公告</td><td>2024-02-27</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1sQFwdLQ1hVUwYIRBcHRkQIB1BcWEIX.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙商银行股份有限公司网络设备及专线入围项目</td><td>招标中</td><td>招标公告</td><td>2024-02-21</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1sQRl1KRVFVUwYIRBcHRkQIAFNdDRIQ.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>上海新大楼网络设备采购项目</td><td>招标中</td><td>招标公告</td><td>2024-02-19</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1sQQFdEFV5VUwYIRBcHRkQIAFdQDxVL.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>上海新大楼网络设备采购</td><td>招标中</td><td>招标公告</td><td>2024-02-19</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://www.jianyu360.cn/article/entservice/U1sQQFdGT19VUwYIRBcHRkQIAFdQXEES.html?appid" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙商银行股份有限公司信息系统安全服务类项目</td><td>其他</td><td>其他</td><td>2024-01-10</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://zfcg.czt.zj.gov.cn/luban/detail?parentId=600007&amp;articleId=ihLzK4osz%2FS4ICHHL3yJag%3D%3D" target="_blank" rel="noopener">查看</a></td></tr><tr><td>信息系统安全服务类项目</td><td>招标中</td><td>招标公告</td><td>2023-12-12</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="http://www.zjhsgl.cn/web/detail?id=551" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙商银行股份有限公司攻防实训平台SaaS服务采购项目</td><td>已中标</td><td>中标公告</td><td>2023-11-02</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://zfcg.czt.zj.gov.cn/luban/detail?parentId=600007&amp;articleId=HLlxctkQVPMwmaqIqxkOxA%3D%3D" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙商银行股份有限公司2023年网络设备维保服务采购项目</td><td>招标中</td><td>招标公告</td><td>2023-09-08</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://zfcg.czt.zj.gov.cn/luban/detail?parentId=600007&amp;articleId=YpRSqHkx%2B91%2Bt%2BmGsxj44g%3D%3D" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙商银行股份有限公司安全资产管理平台采购</td><td>已中标</td><td>中标公告</td><td>2023-08-11</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="https://zfcg.czt.zj.gov.cn/luban/detail?parentId=600007&amp;articleId=48cLMirFLYyAyGXAGwHpFg%3D%3D" target="_blank" rel="noopener">查看</a></td></tr><tr><td>浙商银行股份有限公司安全可控平台虚拟桌面许可采购项目</td><td>已中标</td><td>中标公告</td><td>2023-08-04</td><td>浙商银行股份有限公司</td><td><a class="table-link" href="http://www.cfcpn.com/jcw/sys/index/goUrl?url=modules/sys/login/detail&amp;column=4&amp;searchVal=5f3ab647db144dc8a61d90d11bb23e8e" target="_blank" rel="noopener">查看</a></td></tr></tbody></table></details>
+      <h3>合同明细（默认展示5条，其余折叠）</h3>
+      <table class="data-table"><colgroup><col style="width:16%"><col style="width:28%"><col style="width:34%"><col style="width:10%"><col style="width:12%"></colgroup><thead><tr><th>合同编号</th><th>项目名称</th><th>产品/服务</th><th>金额区间</th><th>签约日期</th></tr></thead><tbody><tr><td>AH24-P12-0243</td><td>浙商银行股份有限公司探针扩容项目</td><td>明御APT攻击预警平台</td><td>50万以下</td><td>2024-12-13</td></tr><tr><td>AH24-P12-0203</td><td>浙商银行股份有限公司探针扩容项目</td><td>AiLPHA安全分析与管理平台</td><td>50万以下</td><td>2024-12-10</td></tr><tr><td>JXSYKJ24-M08-0004</td><td>未披露</td><td>明御数据库审计与风险控制系统</td><td>50万以下</td><td>2024-08-22</td></tr><tr><td>AH23-P09-0105</td><td>安全态势感知与预警平台扩容</td><td>AiLPHA安全分析与管理平台</td><td>100-300万</td><td>2023-10-14</td></tr><tr><td>AH23-S08-0160</td><td>重要时期网络安全保障值守人力采购</td><td>非安恒设备值守保障; 专业安全服务</td><td>50万以下</td><td>2023-08-30</td></tr></tbody></table><details class="collapsed-table"><summary>展开剩余 71 条记录</summary><table class="data-table"><colgroup><col style="width:16%"><col style="width:28%"><col style="width:34%"><col style="width:10%"><col style="width:12%"></colgroup><thead><tr><th>合同编号</th><th>项目名称</th><th>产品/服务</th><th>金额区间</th><th>签约日期</th></tr></thead><tbody><tr><td>AH23-S08-0203</td><td>亚运保障专项安全测评服务</td><td>专业安全服务</td><td>50万以下</td><td>2023-08-24</td></tr><tr><td>AH23-P03-0154</td><td>安全运营平台软件</td><td>AiLPHA SOAR智能编排与协同定制开发服务; AiLPHA安全编排与协同响应管理平台; CISP</td><td>50-100万</td><td>2023-04-09</td></tr><tr><td>AH23-P01-0089</td><td>信息系统运行数据独立报送模块</td><td>AiLPHA安全分析与管理平台</td><td>50万以下</td><td>2022-12-25</td></tr><tr><td>AH22-P12-0315</td><td>未披露</td><td>明御数据库审计与风险控制系统</td><td>50万以下</td><td>2022-12-14</td></tr><tr><td>AH22-T12-0004</td><td>网络安全技能专项培训</td><td>定制培训服务</td><td>50万以下</td><td>2022-12-02</td></tr><tr><td>AH22-P08-0066</td><td>未披露</td><td>明御数据库审计与风险控制系统</td><td>50万以下</td><td>2022-08-17</td></tr><tr><td>AH22-S01-0031</td><td>未披露</td><td>红蓝对抗</td><td>50万以下</td><td>2022-01-13</td></tr><tr><td>AH21-S11-0059</td><td>未披露</td><td>检测类服务</td><td>50万以下</td><td>2021-11-20</td></tr><tr><td>AH21-T11-0005</td><td>2021网络安全条线新人培训项目</td><td>网安技能培训</td><td>50万以下</td><td>2021-11-12</td></tr><tr><td>AH21-S09-0079</td><td>未披露</td><td>红蓝对抗</td><td>50万以下</td><td>2021-09-24</td></tr><tr><td>AH21-P08-0286</td><td>态势感知扩容设备采购合同</td><td>2万兆光; AiLPHA大数据智能安全平台; AiNTA流量分析系统; 集成项目驻场运营</td><td>100-300万</td><td>2021-08-26</td></tr><tr><td>AH21-S03-0111</td><td>浙商银行股份有限公司智能安防系统专项安全测试服务</td><td>检测类服务</td><td>50万以下</td><td>2021-03-31</td></tr><tr><td>AH21-S02-0046</td><td>未披露</td><td>可信众测</td><td>50万以下</td><td>2021-02-24</td></tr><tr><td>AH21-S02-0045</td><td>未披露</td><td>检测类服务</td><td>50万以下</td><td>2021-02-24</td></tr><tr><td>AH20-P12-0656</td><td>未披露</td><td>明御数据库审计与风险控制系统</td><td>50万以下</td><td>2020-12-17</td></tr><tr><td>AH20-S10-0073</td><td>浙商银行网银网站监控安全服务</td><td>先知云监测服务-标准版</td><td>50万以下</td><td>2020-10-30</td></tr><tr><td>AH20-M10-0025</td><td>WEB应用弱点扫描器软件维护服务</td><td>明鉴Web应用弱点扫描器</td><td>50万以下</td><td>2020-10-30</td></tr><tr><td>AH20-P10-0247</td><td>浙银U云态势感知系统</td><td>AiLPHA大数据智能安全平台; AiNTA流量分析系统; 明御综合日志审计平台</td><td>50万以下</td><td>2020-10-09</td></tr><tr><td>AH20-S09-0243</td><td>未披露</td><td>检测类服务</td><td>50万以下</td><td>2020-08-19</td></tr><tr><td>AH20-P05-0296</td><td>未披露</td><td>AILPHA大数据智能安全平台; AiNTA流量分析系统; 明御综合日志审计平台</td><td>50-100万</td><td>2020-06-23</td></tr><tr><td>AH19-P11-544</td><td>未披露</td><td>AiLPHA安全分析与管理平台; AiLPHA大数据智能安全平台; 大数据定制开发服务; 集成项目驻场运营; 明御APT攻击(网络战)预警平台; 明御云APT攻击(网络战)预警平台; 明御云综合日志审计平台</td><td>50-100万</td><td>2020-06-23</td></tr><tr><td>AH19-S01-008</td><td>未披露</td><td>玄武盾标准版云监测服务</td><td>50万以下</td><td>2019-01-08</td></tr><tr><td>AH18-M12-016</td><td>未披露</td><td>明鉴Web应用弱点扫描器</td><td>50万以下</td><td>2018-12-20</td></tr><tr><td>AH18-P09-349</td><td>未披露</td><td>AILPHA大数据智能安全平台; 安恒设备策略调整; 大数据定制开发服务; 明鉴网站恶意代码检查工具; 明御APT攻击预警平台; 明御综合日志审计平台</td><td>50-100万</td><td>2018-10-12</td></tr><tr><td>AH17-S07-019</td><td>未披露</td><td>安全服务</td><td>未披露</td><td>2017-07-27</td></tr><tr><td>AH16-S07-008</td><td>未披露</td><td>网站安全监测服务</td><td>未披露</td><td>2016-07-14</td></tr><tr><td>AH16-S06-013</td><td>未披露</td><td>安全服务</td><td>未披露</td><td>2016-06-15</td></tr><tr><td>AH15-S06-021</td><td>未披露</td><td>监测服务</td><td>未披露</td><td>2015-07-10</td></tr><tr><td>AH14-S12-013</td><td>未披露</td><td>安全服务</td><td>未披露</td><td>2014-12-17</td></tr><tr><td>AH14-P11-038</td><td>未披露</td><td>其他</td><td>未披露</td><td>2014-11-27</td></tr><tr><td>AH14-S01-002</td><td>未披露</td><td>安全服务</td><td>未披露</td><td>2014-05-13</td></tr><tr><td>AH12-S06-001</td><td>未披露</td><td>安全服务</td><td>未披露</td><td>2012-06-28</td></tr><tr><td>AH12-S06-004</td><td>未披露</td><td>安全服务</td><td>未披露</td><td>2012-06-28</td></tr><tr><td>AH12-S06-009</td><td>未披露</td><td>安全服务</td><td>未披露</td><td>2012-06-28</td></tr><tr><td>AH12-P03-043</td><td>未披露</td><td>WEB应用弱点扫描器单机版</td><td>未披露</td><td>2012-03-31</td></tr><tr><td>AH10-S10-014</td><td>未披露</td><td>安全服务</td><td>未披露</td><td>2010-10-15</td></tr><tr><td>AH22-S11-0275</td><td>浙商银行驻场四季度结算两个月</td><td>专业安全服务</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH24-S05-0014</td><td>2024年第一季度外包人员结算</td><td>驻场服务</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH21-S10-0086</td><td>未披露</td><td>驻场服务</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH19-S06-013</td><td>未披露</td><td>驻场服务</td><td>未披露</td><td>未披露</td></tr><tr><td>AH26-P02-0058</td><td>浙商银行分类分级项目</td><td>CCRC; 安恒AiSort数据安全分级及风险管理平台</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH22-S08-0162</td><td>互联网众测服务采购订单</td><td>可信众测</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH20-S06-0050</td><td>未披露</td><td>驻场服务</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH24-M07-0007</td><td>态势感知与预警平台设备维保服务</td><td>AiLPHA大数据智能安全平台; 明御APT攻击预警平台; 明御综合日志审计平台</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH20-S11-0202</td><td>未披露</td><td>驻场服务</td><td>50-100万</td><td>未披露</td></tr><tr><td>AH20-S08-0071</td><td>未披露</td><td>驻场服务</td><td>50-100万</td><td>未披露</td></tr><tr><td>AH21-S05-0050</td><td>未披露</td><td>驻场服务</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH26-M02-0044</td><td>浙商银行数审及态感维保</td><td>AiLPHA安全分析与管理平台; 明御APT攻击预警平台; 明御数据库审计与风险控制系统; 明御综合日志审计分析平台; 威胁检测及恶意文件规则库升级续订服务; 威胁情报升级续订服务</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH23-S05-0078</td><td>2023年一季度外包人员结算</td><td>集成项目驻场运营; 专业安全服务</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH23-S12-0156</td><td>红队服务合同结算</td><td>专业安全服务</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH24-S04-0067</td><td>浙商银行2023年第四季度（12.1-12.31）人力驻场结算</td><td>驻场服务</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH24-S12-0053</td><td>浙商银行攻击队服务</td><td>特定对象安全服务; 专业安全服务</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH23-S05-0089</td><td>攻防演练攻击服务</td><td>专业安全服务</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH22-S02-0017</td><td>未披露</td><td>驻场服务</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH25-P03-0236</td><td>安全运营平台迭代升级项目</td><td>【标准版软件】恒脑DeepSeek安全垂域系统; 10GE多模光模块(SFP+,0.3km,850nm); 2万兆光网卡; AiLPHA安全编排与协同响应管理平台; AiLPHA安全分析与管理平台; CISP; DasV数字孪生平台; 安恒恒脑安全垂域大模型系统; 明御APT攻击预警平台</td><td>50-100万</td><td>未披露</td></tr><tr><td>AH19-S10-024</td><td>未披露</td><td>可信众测; 驻场服务</td><td>未披露</td><td>未披露</td></tr><tr><td>AH25-S04-0113</td><td>浙商银行攻防演练红队服务</td><td>特定对象安全服务; 专业安全服务</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH22-S11-0003</td><td>驻场</td><td>驻场安全服务</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH22-S05-0118</td><td>AH22-S05-0118</td><td>红蓝对抗</td><td>50-100万</td><td>未披露</td></tr><tr><td>AH24-S10-0027</td><td>网络安保服务结算</td><td>产品增值服务; 网络安保服务</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH23-S11-0016</td><td>浙商银行2023年第三季度人力驻场结算</td><td>驻场服务</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH23-S08-0054</td><td>浙商银行2023年第二季度人力驻场结算</td><td>集成项目驻场运营; 驻场服务</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH23-S12-0116</td><td>2023年第四季度（10.1-11.30）人力驻场结算</td><td>驻场服务</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH25-S04-0032</td><td>浙商银行源代码审计服务</td><td>专业安全服务</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH19-S11-056</td><td>未披露</td><td>驻场服务</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH24-S06-0030</td><td>电子银行安全测评</td><td>专业安全服务</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH26-S07-0040</td><td>浙商银行电子银行评估</td><td>AI智能服务</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH24-P04-0091</td><td>关于贵金属自营量化等系统的安全态势感知 设备采购合同</td><td>AiLPHA安全分析与管理平台</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH22-S04-0054</td><td>驻场</td><td>驻场服务</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH22-S08-0026</td><td>驻场</td><td>驻场安全服务</td><td>50万以下</td><td>未披露</td></tr><tr><td>AH21-S08-0084</td><td>未披露</td><td>驻场服务</td><td>50万以下</td><td>未披露</td></tr></tbody></table></details>
+    </section>
+
+    <section class="section" id="sec-recommendations">
+      <div class="section-title"><span class="icon">💡</span>产品和服务采购建议</div>
+      <div class="highlight-box"><p>建议围绕金融监管、数据安全、业务连续性和安全运营闭环形成组合方案，优先从已有采购线索对应的续约、扩容和平台化治理切入。</p></div><table class="data-table"><colgroup><col style="width:14.29%"><col style="width:14.29%"><col style="width:14.29%"><col style="width:14.29%"><col style="width:14.29%"><col style="width:14.29%"><col style="width:14.29%"></colgroup><thead><tr><th>安全域</th><th>当前等级</th><th>标准名称</th><th>内部名称</th><th>类型</th><th>推荐优先级</th><th>推荐原因</th></tr></thead><tbody><tr><td>基础安全防护</td><td>L3</td><td>终端安全管理系统（EDR）</td><td>明御终端安全及防病毒系统</td><td>产品</td><td>RP2</td><td>客户已有Web应用防火墙（WAF）、堡垒机、运维安全管理平台、网络审计系统等边界与终端侧建设基础，建议补齐 EDR 形成终端检测、响应和处置闭环。</td></tr><tr><td>基础安全防护</td><td>L3</td><td>安全加固服务</td><td>安全加固服务</td><td>基础安全服务</td><td>RP3</td><td>客户已存在Web应用防火墙（WAF）、堡垒机、运维安全管理平台、网络审计系统等基础防护投入，建议将安全加固纳入常态化服务，降低存量资产暴露风险。</td></tr><tr><td>安全运营</td><td>L3</td><td>安全分析与管理平台（SIEM/SOC）</td><td>AiLPHA安全分析与管理平台</td><td>产品</td><td>RP1</td><td>已有安全编排自动化与响应（SOAR）、安全分析与管理平台（SIEM/SOC）、攻防演练组织、资产发现与管理平台相关线索，适合推进统一安全运营平台，沉淀告警关联、事件研判和态势感知能力。</td></tr><tr><td>安全运营</td><td>L3</td><td>安全编排自动化与响应（SOAR）</td><td>AiLPHA安全编排与协同响应管理平台</td><td>产品</td><td>RP4</td><td>在安全编排自动化与响应（SOAR）、安全分析与管理平台（SIEM/SOC）、攻防演练组织、资产发现与管理平台基础上补充运营驻场服务，可保障平台落地后的持续运营和响应效率。</td></tr><tr><td>安全运营</td><td>L3</td><td>安全运营驻场服务</td><td>安全运营驻场服务</td><td>基础安全服务</td><td>RP2</td><td>在安全编排自动化与响应（SOAR）、安全分析与管理平台（SIEM/SOC）、攻防演练组织、资产发现与管理平台基础上补充运营驻场服务，可保障平台落地后的持续运营和响应效率。</td></tr><tr><td>数据安全</td><td>L2</td><td>数据安全管理平台（DSMP）</td><td>AiGuard数据安全管理平台</td><td>产品</td><td>RP1</td><td>已有数据库审计系统（DAS）、数据防泄漏（DLP）、大数据智能安全平台、数据分类分级等数据安全建设线索，可进一步推进 DSMP 统一管控分类分级、审计和风险处置。</td></tr><tr><td>数据安全</td><td>L2</td><td>数据安全风险评估</td><td>数据安全风险评估咨询</td><td>安全咨询服务</td><td>RP2</td><td>围绕数据库审计系统（DAS）、数据防泄漏（DLP）、大数据智能安全平台、数据分类分级开展风险评估，可为后续 DSMP、数据库审计和 API 安全治理提供路线图。</td></tr><tr><td>安全开发</td><td>L1</td><td>静态应用安全测试（SAST）</td><td>安恒深度静态分析源代码审计产品</td><td>产品</td><td>RP2</td><td>客户已有源代码安全审计等研发安全服务基础，建议引入 SAST/SCA 工具，将代码安全能力从项目制服务升级为持续门禁。</td></tr><tr><td>安全开发</td><td>L1</td><td>上线前安全评估</td><td>上线前安全评估服务</td><td>基础安全服务</td><td>RP3</td><td>结合源代码安全审计等服务基础，补充上线前安全评估可快速建立发布前风险校验机制。</td></tr><tr><td>AI安全</td><td>L1</td><td>大模型安全防护系统</td><td>大模型安全防护系统</td><td>产品</td><td>RP2</td><td>已发现大模型安全垂域系统、大模型等 AI 应用或安全线索，建议提前布局大模型安全防护，避免 AI 场景扩展后再被动补课。</td></tr><tr><td>AI安全</td><td>L1</td><td>AI 安全成熟度评估</td><td>AI 安全成熟度评估</td><td>安全咨询服务</td><td>RP3</td><td>已发现大模型安全垂域系统、大模型等 AI 应用或安全线索，建议提前布局大模型安全防护，避免 AI 场景扩展后再被动补课。</td></tr></tbody></table>
+    </section>
+
+    <section class="section" id="sec-sources">
+      <div class="section-title"><span class="icon">📎</span>数据来源</div>
+      <ul class="source-list"><li><strong>关于浙商银行股份有限公司电子银行信息系统外部专业安全测评服务...</strong> <a href="https://xunbiaobao.baidu.com/biddingDetail?id=c684b58afcad06f82c47f23a8e89ffd8268cf257&amp;source=seo" target="_blank" rel="noopener">来源链接</a><div class="muted">受业主委托,寻标宝于2022-12-12发布关于浙商银行股份有限公司电子银行信息系统外部专业安全...</div></li><li><strong>关于浙商银行股份有限公司信息系统安全服务类项目入围的公开招标...</strong> <a href="http://www.zjhsgl.cn/web/detail?id=551" target="_blank" rel="noopener">来源链接</a><div class="muted">参照《中华人民共和国招标投标法》等法律法规规定,现就浙商银行股份有限公司信息系统安全服务类项目入围项目进行公开招标采购,欢迎国内合格的投标人前来投标。 一、项目名称:信息系统安全服务类项目入围 二、项目编号:ZHJH2023GLJCKYGKb188 三、招标内容: 项目名称标段招标内容说明信息系统安全服务类项目入围标段 1电子银行...</div></li><li><strong>浙商银行招标结果:关于浙商银行分支机构入侵防御设备、一机一网...</strong> <a href="https://news.sohu.com/a/1054941217_121319643" target="_blank" rel="noopener">来源链接</a><div class="muted">采购方:浙商银行股份有限公司 供应商:上海华讯网络系统有限公司,深圳市紫金支点技术股份有限公司 中标金额: 地区:浙江省 发布日期:2026-07-23 通过天眼查大数据分析,浙商银行股份有限公司共对外投资了6家企业,参与招投标项目2784次;财产线索方面有商标信息614条,专利信息161条,著作权信息68条;此外企业还拥有行政许可63...</div></li><li><strong>浙商银行数智采购平台</strong> <a href="https://ccgp.szcgpt.czbank.com/luban/home" target="_blank" rel="noopener">来源链接</a><div class="muted">浙商银行科研中心(西安)项目1#2#楼精装工程一标段(二次招标) 2025-04-03 浙商银行科研中心(西安)项目1#2#楼弱电工程(二次招标) 2025-03-14 浙商银行2026年网络安全全面测评服务采购单一来源采购公示 2026-07-16 浙商银行国库集中支付系统国产化签名服务器设备采购单一来源采购公示 2026-07-14 宁波</div></li><li><strong>浙江浙商银行上海招标公告</strong> <a href="https://www.qianlima.com/gjxx/399969_30_0" target="_blank" rel="noopener">来源链接</a><div class="muted">提供浙江浙商银行上海招标公告招标信息,采购信息,中标信息,业主委托等招投标信息。登陆浙江浙商银行上海招标公告获取全面、精准、及时的招标信息!查询浙江浙商银行上海招标公告招投标信息就上千里马招标网!</div></li></ul>
+    </section>
+  </div>
+  <script>
+    Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+    Chart.defaults.color = '#94a3b8';
+    const radarLabels = ["基础安全防护", "安全运营", "数据安全", "安全开发", "AI安全"];
+    const radarValues = [3, 3, 2, 1, 1];
+    const radarTargetValues = [4, 4, 4, 3, 3];
+    const radar = document.getElementById('maturityRadar');
+    if (radar && window.Chart) {
+      new Chart(radar, {
+        type: 'radar',
+        data: {
+          labels: radarLabels,
+          datasets: [{
+            label: '当前等级',
+            data: radarValues,
+            backgroundColor: 'rgba(26,110,245,.18)',
+            borderColor: '#1a6ef5',
+            pointBackgroundColor: '#1a6ef5',
+            borderWidth: 2
+          }, {
+            label: '目标等级',
+            data: radarTargetValues,
+            backgroundColor: 'rgba(139,92,246,.06)',
+            borderColor: '#8b5cf6',
+            pointBackgroundColor: '#8b5cf6',
+            borderDash: [6, 6],
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            r: {
+              min: 0,
+              max: 5,
+              ticks: { stepSize: 1, callback: function(v) { return v === 0 ? '' : ['', 'L1', 'L2', 'L3', 'L4', 'L5'][v]; } },
+              grid: { color: '#f1f5f9' },
+              pointLabels: { font: { size: 13, weight: '600' } }
+            }
+          },
+          plugins: {
+            legend: {
+              display: true,
+              position: 'bottom',
+              labels: { usePointStyle: true, boxWidth: 10, boxHeight: 10 }
+            }
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
