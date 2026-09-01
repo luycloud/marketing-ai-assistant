@@ -927,14 +927,14 @@ body {
       <div class="pil-icon"><svg width="24" height="24"><use href="#i-folder"/></svg></div>
       <div class="pil-name">投标支持</div>
       <div class="pil-desc">报价、案例、人员、资质、文档，投标材料一站备齐</div>
-      <div class="pil-mods"><span class="pil-mod">查价格</span><span class="pil-mod">找案例</span><span class="pil-mod">查人员</span><span class="pil-mod">查资质</span><span class="pil-mod">文档下载</span></div>
+      <div class="pil-mods"><span class="pil-mod">查价格</span><span class="pil-mod">找案例</span><span class="pil-mod">查人员</span><span class="pil-mod">查资质</span><span class="pil-mod">文档下载</span><span class="pil-mod">写方案</span></div>
       <div class="pil-arrow">查看详情 <svg width="12" height="12"><use href="#i-chevron-right"/></svg></div>
     </div>
     <div class="pillar-card" style="--cap-color:var(--slate);--cap-bg:rgba(107,114,128,.08)" onclick="switchCategory('collab')">
       <div class="pil-icon"><svg width="24" height="24"><use href="#i-book"/></svg></div>
       <div class="pil-name">内部协同</div>
       <div class="pil-desc">产品问答、找对接人、查制度，驻场排产一站管理</div>
-      <div class="pil-mods"><span class="pil-mod">知识助手</span><span class="pil-mod">找对接人</span><span class="pil-mod">查制度</span><span class="pil-mod">查驻场</span><span class="pil-mod">查排产/发货</span></div>
+      <div class="pil-mods"><span class="pil-mod">知识助手</span><span class="pil-mod">找对接人</span><span class="pil-mod">查制度</span><span class="pil-mod">查驻场</span><span class="pil-mod">查排产/发货</span><span class="pil-mod">管项目</span></div>
       <div class="pil-arrow">查看详情 <svg width="12" height="12"><use href="#i-chevron-right"/></svg></div>
     </div>
   </div>
@@ -970,11 +970,11 @@ body {
   </div>
 
   <div class="cat-bar" id="catBar">
-    <button class="cat-chip active" data-cat="all">全部<span class="chip-count">15</span></button>
+    <button class="cat-chip active" data-cat="all">全部<span class="chip-count">17</span></button>
     <button class="cat-chip" data-cat="insight"><span class="cat-dot insight"></span>客户洞察<span class="chip-count">4</span></button>
     <button class="cat-chip" data-cat="opp"><span class="cat-dot opp"></span>商机挖掘<span class="chip-count">1</span></button>
-    <button class="cat-chip" data-cat="bid"><span class="cat-dot bid"></span>投标支持<span class="chip-count">5</span></button>
-    <button class="cat-chip" data-cat="collab"><span class="cat-dot collab"></span>内部协同<span class="chip-count">5</span></button>
+    <button class="cat-chip" data-cat="bid"><span class="cat-dot bid"></span>投标支持<span class="chip-count">6</span></button>
+    <button class="cat-chip" data-cat="collab"><span class="cat-dot collab"></span>内部协同<span class="chip-count">6</span></button>
   </div>
 
   <div class="cap-grid" id="capGrid"></div>
@@ -997,7 +997,7 @@ body {
       <div class="int-name">找方案</div>
       <div class="int-desc">输入行业、产品或客户需求，AI 从安恒售前知识库中智能检索典型案例、标准化产品方案及行业全套落地政策，输出完整答复并附带文档一键下载，告别反复问询行销、零散搜集资料的沟通成本。</div>
       <div class="int-source">📂 知识库 · 安恒售前知识库</div>
-      <a class="int-btn" href="https://applink.dingtalk.com/client/aiAgent?assistantId=d5f70ccfab3c47808fb7b3a54cb48332&from=share" target="_blank" rel="noopener">进入应用 <svg width="12" height="12"><use href="#i-external-link"/></svg></a>
+      <a class="int-btn" href="dingtalk://dingtalkclient/page/singleconversation?uid=6620480103" target="_blank" rel="noopener">进入应用 <svg width="12" height="12"><use href="#i-external-link"/></svg></a>
     </div>
     <div class="int-card">
       <div class="int-icon" style="background:rgba(13,148,136,.1);color:var(--green)"><svg width="24" height="24"><use href="#i-doc"/></svg></div>
@@ -1166,7 +1166,7 @@ let currentCat = 'all';
 
 const modules = [
   {
-    id: 'profile', icon: 'i-radar', name: '客户画像分析', cat: 'insight', hot: true,
+    id: 'profile', icon: 'i-radar', name: '客户画像分析', cat: 'insight', hot: true, new: true,
     desc: '快速生成客户安全画像，自动整合多维度安全数据，输出可视化评估报告',
     value: '5分钟生成客户安全全景报告，省去2小时手动整理',
     scenario: '适用场景：客户拜访前快速背调、行业安全态势评估、客户安全需求预判',
@@ -1186,7 +1186,26 @@ const modules = [
     ]
   },
   {
-    id: 'company', icon: 'i-building', name: '查企业', cat: 'insight',
+    id: 'proposal', icon: 'i-book-open', name: '写方案', cat: 'bid', new: true,
+    desc: '基于政策描述、客户背景要求等自动匹配安恒知识库，生成初版PPT或Word方案',
+    value: '基于政策/背景一键生成初版 PPT 或 Word 方案',
+    scenario: '适用场景：项目方案编制、投标文档初稿、政策合规方案输出、客户技术方案快速输出',
+    source: '安恒知识库', perm: 'all', permText: '全员可用',
+    useChatUI: true,
+    chatConversation: {
+      userMsg: '请解读下公安176号文的政策，帮我写一份汇报PPT初版方案',
+      aiMsg: 'PPT 已生成成功！以下是完整内容：<br><br>公安176号文政策解读<br>一、政策身份<br>•  正式名称：《公安机关网络空间安全监督检查办法》（公安部令第176号），公安部令发布，属部门规章，全国范围内具有强制约束力<br>......<br>汇报 PPT 初版方案已生成（19 页，含政策解读、检查要点、合规差距与应对建议、实施路径）：<br>PPT 文件：<span style="color:var(--primary);text-decoration:underline;cursor:pointer">点击下载PPT</span><br>.......',
+      time: '16:38'
+    },
+    chatFullConversation: [
+      { userMsg: '请解读下公安176号文的政策，帮我写一份汇报PPT初版方案', aiMsg: 'PPT 已生成成功！以下是完整内容：<br><br>公安176号文政策解读<br>一、政策身份<br>•  正式名称：《公安机关网络空间安全监督检查办法》（公安部令第176号），公安部令发布，属部门规章，全国范围内具有强制约束力<br>•  2026年7月1日公安部部务会议审议通过，2026年8月6日发布，2026年10月1日起施行<br>•  同时废止《公安机关互联网安全监督检查规定》（公安部令第151号）<br>二、核心变化<br>•  监管内涵升级：由"互联网安全"升级为"网络空间安全"，涵盖网络安全、数据安全、信息安全三个维度<br>......<br>汇报 PPT 初版方案已生成（19 页，含政策解读、检查要点、合规差距与应对建议、实施路径）：<br>PPT 文件：<span style="color:var(--primary);text-decoration:underline;cursor:pointer">点击下载PPT</span><br>说明：本版为通用初稿，客户现状、范围、预算等未知信息均以"待评估/建议"标注，未虚构。如需针对特定客户或调整汇报对象、重点章节，可告诉我后重新调整。' }
+    ],
+    questions: [
+      { tag: 'acc', tagText: '政策要求', text: '请解读下公安176号文的政策，帮我写一份汇报PPT初版方案' },
+      { tag: 'acc', tagText: '产品要求', text: '我要做XXX项目，客户背景是XXX，重点需要防火墙和堡垒机产品，请帮助写一份Word方案' }
+    ]
+  },
+    { id: 'company', icon: 'i-building', name: '查企业', cat: 'insight',
     desc: '查询企业工商信息、风险提示及关联关系，一键掌握企业全貌',
     value: '拜访前3分钟完成企业尽调，告别多平台手动搜索',
     scenario: '适用场景：客户拜访前准备、合作方资质核实、竞品企业动态跟踪',
@@ -1207,16 +1226,20 @@ const modules = [
   {
     id: 'customer', icon: 'i-network', name: '查客户', cat: 'insight',
     desc: '一键查询LTC系统中的客户信息及负责人，提升客户跟进效率',
-    value: '秒级获取客户负责人信息，省去跨部门沟通成本',
-    scenario: '适用场景：客户归属确认、负责人对接、客户分层管理',
+    value: '快速获取客户负责人信息、驻场绿灯判定，省去跨部门沟通成本',
+    scenario: '适用场景：客户归属确认、负责人对接、客户分层管理、驻场绿灯判定',
     source: 'LTC 客户管理系统', perm: 'all', permText: '全员可用',
     useChatUI: true,
     chatConversation: {
       userMsg: '帮我查一下中国电信股份有限公司吉安分公司的客户负责人',
-      aiMsg: '中国电信股份有限公司吉安分公司的客户负责人为：<b>伍斌</b>。<br><br>• 客户名称：中国电信股份有限公司吉安分公司<br>• 客户编号：KHBH‑DD‑20220621‑0009<br>• 客户负责人：伍斌<br>• 所属部门：江西办<br>• 一级行业：运营商<br>• 二级行业：电信<br>• 内部客户类型：地市客户<br><br><span style="font-size:11px;color:var(--text-light)">数据来源：OA客户档案</span>',
+      aiMsg: '【客户信息】<br><br>• 客户名称：中国电信股份有限公司吉安分公司<br>• 客户编号：KHBH‑DD‑20220621‑0009<br>• 所属部门：江西办<br>• 一级行业：运营商<br>• 二级行业：电信<br>• 内部客户类型：地市客户<br>• 备注：公海客户，全量开放，增量商机可系统直接发起。<br><br><span style="font-size:11px;color:var(--text-light)">数据来源：OA客户档案</span>',
       guessQuestions: '• 中国电信股份有限公司吉安分公司有哪些案例?<br>• 查询运营商行业的案例<br>• 江西办还有哪些客户',
       time: '16:38'
     },
+    chatFullConversation: [
+      { userMsg: '帮我查一下中国电信股份有限公司吉安分公司的客户负责人', aiMsg: '【客户信息】<br><br>• 客户名称：中国电信股份有限公司吉安分公司<br>• 客户编号：KHBH‑DD‑20220621‑0009<br>• 所属部门：江西办<br>• 一级行业：运营商<br>• 二级行业：电信<br>• 内部客户类型：地市客户<br>• 备注：公海客户，全量开放，增量商机可系统直接发起。<br><br><span style="font-size:11px;color:var(--text-light)">数据来源：OA客户档案</span>' },
+      { userMsg: '该客户符合驻场绿灯条件吗？', aiMsg: '中国电信股份有限公司吉安分公司符合驻场绿灯条件：<br>判定依据（满足条件一）<br>• 条件一：近三年综合毛利率 ≥ 50% 符合<br>• 条件二：客户等级：公司级TOP100战略客户 不符合<br>满足条件一即可判定符合驻场绿灯条件。<br>数据来源：客户管理系统、财务/经营分析系统' }
+    ],
     questions: [
       { tag: 'acc', tagText: '精准查询', text: '帮我查一下中国电信股份有限公司吉安分公司的客户负责人' },
       { tag: 'fuz', tagText: '模糊查询', text: '帮我查一下中国移动的客户负责人' }
@@ -1261,27 +1284,29 @@ const modules = [
     ]
   },
   {
-    id: 'case', icon: 'i-folder', name: '找案例', cat: 'bid', hot: true,
+    id: 'case', icon: 'i-folder', name: '找案例', cat: 'bid', hot: true, new: true,
     desc: '提供项目案例与配套合同，可下载作为投标证明材料和参考',
-    value: '同行业案例+合同一站获取，投标材料准备提效80%',
+    value: '同行业案例+合同/中标通知书/回单一站获取，投标材料准备提效80%',
     scenario: '适用场景：投标材料准备、客户案例展示、行业方案参考',
     source: 'OA经典案例', perm: 'all', permText: '全员可用',
-    tip: '支持按<strong>行业、区域、金额、时间、产品、客户名称</strong>组合查询，维度越多匹配越精准',
+    tip: '支持按<strong>行业、区域、金额、时间、产品、客户名称、合同号等</strong>组合查询，维度越多匹配越精准',
     useChatUI: true,
     chatConversation: {
       userMsg: '我需要杭州近三年金融行业的案例',
-      aiMsg: '共为您找到以下符合条件的合同案例（近三年杭州金融行业）：<br><br><b>项目名称1: 浙商证券股份有限公司</b><br>• 合同号: AH26-S05-0028<br>• 金额范围: 10-50万<br>• 客户名称：浙商证券股份有限公司<br>• 省份：浙江省<br>• 城市：杭州市<br>• 合同签约时间: 2026-05-27<br>• 商机一级行业：金融<br>• 商机二级行业：证券期货<br>• 产品列表：定制培训服务、市场服务<br><br><b>项目名称2: 北汽汽车金融（杭州）有限公司</b><br>• 合同号: AH26-S04-0107<br>• 金额范围: 10-50万<br>• 客户名称：北汽汽车金融（杭州）有限公司<br>• 省份：浙江省<br>• 城市：杭州市<br>• 合同签约时间: 2026-05-17<br>• 商机一级行业：金融<br>• 商机二级行业：金融其他<br>• 产品列表：安全咨询服务<br><br>⋯⋯<br><br>如需下载合同复印件，请告诉我"下载"即可。',
+      aiMsg: '共为您找到以下符合条件的合同案例（近三年杭州金融行业）：<br><br><b>项目名称1: 浙商证券股份有限公司</b><br>• 合同号: AH26-S05-0028<br>• 金额范围: 10-50万<br>• 客户名称：浙商证券股份有限公司<br>• 省份：浙江省<br>• 城市：杭州市<br>• 合同签约时间: 2026-05-27<br>• 商机一级行业：金融<br>• 商机二级行业：证券期货<br>• 产品列表：定制培训服务、市场服务<br>•  附件可用：合同复印件✅ 中标通知书❌ 回单✅<br><br><b>项目名称2: 北汽汽车金融（杭州）有限公司</b><br>• 合同号: AH26-S04-0107<br>• 金额范围: 10-50万<br>• 客户名称：北汽汽车金融（杭州）有限公司<br>• 省份：浙江省<br>• 城市：杭州市<br>• 合同签约时间: 2026-05-17<br>• 商机一级行业：金融<br>• 商机二级行业：金融其他<br>• 产品列表：安全咨询服务<br><br>⋯⋯<br><br>',
       guessQuestions: '• 下载AH26-S02-0004合同<br>• 查询金融行业最新中标公告<br>• 查询运营商行业的案例',
       time: '16:38'
     },
     chatFullConversation: [
-      { userMsg: '我需要杭州近三年金融行业的案例', aiMsg: '共为您找到以下符合条件的合同案例（近三年杭州金融行业）：<br><br><b>项目名称1: 浙商证券股份有限公司</b><br>• 合同号: AH26-S05-0028<br>• 金额范围: 10-50万<br>• 客户名称：浙商证券股份有限公司<br>• 省份：浙江省<br>• 城市：杭州市<br>• 合同签约时间: 2026-05-27<br>• 商机一级行业：金融<br>• 商机二级行业：证券期货<br>• 产品列表：定制培训服务、市场服务<br><br><b>项目名称2: 北汽汽车金融（杭州）有限公司</b><br>• 合同号: AH26-S04-0107<br>• 金额范围: 10-50万<br>• 客户名称：北汽汽车金融（杭州）有限公司<br>• 省份：浙江省<br>• 城市：杭州市<br>• 合同签约时间: 2026-05-17<br>• 商机一级行业：金融<br>• 商机二级行业：金融其他<br>• 产品列表：安全咨询服务<br><br>⋯⋯<br><br><b>项目名称5: 浙江农村商业联合银行股份有限公司</b><br>• 合同号: AH26-S02-0004<br>• 金额范围: 200-500万<br>• 客户名称：浙江农村商业联合银行股份有限公司<br>• 省份：浙江省<br>• 城市：杭州市<br>• 合同签约时间: 2026-02-03<br>• 商机一级行业：金融<br>• 商机二级行业：农信<br>• 产品列表：天穹MSS服务、安恒云-玄武盾云监测服务(专家服务版)、驻场服务、风暴中心外包服务<br><br>如需下载合同复印件，请告诉我"下载"即可。' },
-      { userMsg: '下载AH26-S02-0004', aiMsg: '已为您生成合同复印件打包下载链接：<br>• 案例数量：1 个<br>• 下载链接：<span style="color:var(--primary);text-decoration:underline">点击下载</span><br>• 温馨提示：链接有效期24小时，请及时下载保存' }
+      { userMsg: '我需要杭州近三年金融行业的案例', aiMsg: '共为您找到以下符合条件的合同案例（近三年杭州金融行业）：<br><br><b>项目名称1: 浙商证券股份有限公司</b><br>• 合同号: AH26-S05-0028<br>• 金额范围: 10-50万<br>• 客户名称：浙商证券股份有限公司<br>• 省份：浙江省<br>• 城市：杭州市<br>• 合同签约时间: 2026-05-27<br>• 商机一级行业：金融<br>• 商机二级行业：证券期货<br>• 产品列表：定制培训服务、市场服务<br>•  附件可用：合同复印件✅ 中标通知书❌ 回单✅<br><br><b>项目名称2: 北汽汽车金融（杭州）有限公司</b><br>• 合同号: AH26-S04-0107<br>• 金额范围: 10-50万<br>• 客户名称：北汽汽车金融（杭州）有限公司<br>• 省份：浙江省<br>• 城市：杭州市<br>• 合同签约时间: 2026-05-17<br>• 商机一级行业：金融<br>• 商机二级行业：金融其他<br>• 产品列表：安全咨询服务<br><br>⋯⋯<br><br><b>项目名称5: 浙江农村商业联合银行股份有限公司</b><br>• 合同号: AH26-S02-0004<br>• 金额范围: 200-500万<br>• 客户名称：浙江农村商业联合银行股份有限公司<br>• 省份：浙江省<br>• 城市：杭州市<br>• 合同签约时间: 2026-02-03<br>• 商机一级行业：金融<br>• 商机二级行业：农信<br>• 产品列表：天穹MSS服务、安恒云-玄武盾云监测服务(专家服务版)、驻场服务、风暴中心外包服务<br>•  附件可用：合同复印件✅ 中标通知书❌ 回单✅<br><br>' },
+      { userMsg: '下载AH26-S02-0004的合同复印件', aiMsg: '合同复印件下载链接已生成（合同号 AH26-S02-0004，24 小时有效，可重复下载）：<span style="color:var(--primary);text-decoration:underline">下载合同复印件</span><br>合同复印件剩余下载次数：29 次' },
+      { userMsg: '下载AH25-S12-0380的中标通知书和回单', aiMsg: '已为您生成下载链接，有效期24小时，可重复下载：<br>1. 中标通知书 文件：中标通知书_1787898177179.zip <span style="color:var(--primary);text-decoration:underline">下载中标通知书</span> 剩余下载次数：30 次<br>2. 回单 文件：回单_1787898178544.zip <span style="color:var(--primary);text-decoration:underline">下载回单</span> 剩余下载次数：29 次' }
     ],
     questions: [
       { tag: 'acc', tagText: '组合查询', text: '我需要杭州近三年金融行业的案例' },
       { tag: 'acc', tagText: '客户名称', text: '查询招商银行的案例' },
-      { tag: 'dl', tagText: '下载合同', text: '下载合同号为AH25-P12-0169的合同' }
+      { tag: 'dl', tagText: '下载合同', text: '下载合同号为AH25-P12-0169的合同' },
+      { tag: 'dl', tagText: '下载附件', text: '下载AH12-PXX-XXXX的中标通知书和回单' }
     ]
   },
   {
@@ -1415,7 +1440,7 @@ const modules = [
     value: '维保到期=续约商机，及时把握客户维保续签机会',
     scenario: '适用场景：客户维保到期提醒、续约商机挖掘、客户存量合同管理',
     source: 'OA-合同执行情况', perm: 'apply', permText: '销售可查自己数据，管理员可查全部',
-    tip: '支持按<strong>合同号、MAC地址、客户名称</strong>多维度查询',
+    tip: '支持按<strong>合同号、MAC地址、客户名称、POS最终客户</strong>多维度查询',
     useChatUI: true,
     chatConversation: {
       userMsg: '帮我查一下AH22-PXX-XXXX的维保信息',
@@ -1438,7 +1463,7 @@ const modules = [
     value: '驻场人员信息一键直达，项目执行情况尽在掌握',
     scenario: '适用场景：项目驻场人员管理、客户现场服务跟踪、项目资源协调',
     source: '驻场成本确认单', perm: 'apply', permText: '销售可查自己数据，管理员可查全部',
-    tip: '支持按<strong>客户名称、商机编号、项目名称、驻场人员名称</strong>多维度查询',
+    tip: '支持按<strong>客户名称、商机编号、项目名称、驻场人员名称、销售合同编号和成本合同编号等</strong>多维度查询',
     useChatUI: true,
     chatConversation: {
       userMsg: '帮我查一下XXXXXXX的驻场人员信息',
@@ -1478,6 +1503,29 @@ const modules = [
       { tag: 'fuz', tagText: '客户名称', text: '查一下XX公司的订单排产进度' },
       { tag: 'fuz', tagText: '产品型号', text: '查询明御堡垒机目前排产进度' }
     ]
+  },
+  {
+    id: 'ipm', icon: 'i-layers', name: '管项目', cat: 'collab', new: true,
+    desc: '无需手动填报表单，输入即可完成 IPM 项目创建与进度更新',
+    value: '输入即创建/更新 IPM 项目，告别手动填表',
+    scenario: '适用场景：IPM 重点项目跟踪',
+    source: 'IPM 项目管理系统', perm: 'all', permText: '仅行销使用',
+    useChatUI: true,
+    chatConversation: {
+      userMsg: '我今天拜访了XXX客户，客户对XXX感兴趣，帮我创建一个IPM项目',
+      aiMsg: '我搜索到一条相关的 LTC 商机记录：<br><br>商机名称：XXXXXX<br>商机编号：XXXX-XBB-20260828XXXX<br>销售负责人：张三<br>商机阶段：商机立项<br>金额：XXX 万元<br><br>确认再继续创建重点项目？<br><br>用户：是的，创建项目<br>好的，已获取到商机草稿信息，以下是概览：.......',
+      time: '16:38'
+    },
+    chatFullConversation: [
+      { userMsg: '我今天拜访了XXX客户，客户对XXX感兴趣，帮我创建一个IPM项目', aiMsg: '我搜索到一条相关的 LTC 商机记录：<br><br>商机名称：XXXXXX<br>商机编号：XXXX-XBB-20260828XXXX<br>销售负责人：张三<br>商机阶段：商机立项<br>金额：XXX 万元<br><br>确认再继续创建重点项目？' },
+      { userMsg: '是的，创建项目', aiMsg: '好的，已获取到商机草稿信息，以下是概览：<br><br>商机信息<br><br>商机名称：XXXXXX<br>客户名称：XXXXXX有限公司<br>地址：XXXXXXXXX<br>商机阶段：商机立项 | 销售负责人：张三<br>产品：明御防火墙 | 金额：XXX 万元（区域级）<br>项目状态：项目运作中-未立项<br>需要您补充以下信息才能创建重点项目：<br>1.项目名称 当前默认：边界安全加固（可修改）<br>2.行销工作阶段（单选） 请选择：需求调研、商机线索、解决方案、交流引导、POC测试、招标、投标<br>3.项目背景 请简单描述一下今天交流的情况<br>4.技术第一责任人 请提供技术负责人的姓名或工号，我帮您查询' },
+      { userMsg: '项目名称改为 XXXXXXX，工作阶段是交流引导，项目背景是今天和他们公司的cxo交流了我们公司的边界安全加固解决方案，对方比较满意，技术第一责任人是李四', aiMsg: '已查到您的信息，以下是完整的项目预览，请确认：<br>项目名称：XXXXXXX<br>客户名称：XXXXXX有限公司<br>地址：XXXXXXXXX<br>商机阶段：商机立项<br>行销工作阶段：交流引导<br>......<br>确认创建这个 IPM 重点项目吗？' },
+      { userMsg: '确认', aiMsg: 'IPM 重点项目创建成功！<br>项目名称：XXXXXXX<br>LTC dataId：XXXXXXX' }
+    ],
+    questions: [
+      { tag: 'acc', tagText: '新建项目', text: '我今天拜访了XXX客户，客户对XXX感兴趣，帮我创建一个IPM项目' },
+      { tag: 'acc', tagText: '更新项目', text: '我拜访了XXX客户，当前进展为XXXX，更新一下IPM项目' }
+    ]
   }
 ];
 
@@ -1500,7 +1548,8 @@ const scenarioData = [
       { id: 'cert', title: '查资质', desc: '匹配招标要求，获取资质证书' },
       { id: 'case', title: '找案例', desc: '按行业区域查找同类型案例' },
       { id: 'person', title: '查人员', desc: '匹配投标所需人员资质' },
-      { id: 'price', title: '查价格', desc: '获取最新产品报价' }
+      { id: 'price', title: '查价格', desc: '获取最新产品报价' },
+      { id: 'proposal', title: '写方案', desc: '基于政策背景一键生成初版方案' }
     ]
   },
   {
@@ -1508,7 +1557,10 @@ const scenarioData = [
     steps: [
       { id: 'knowledge', title: '知识助手', desc: '产品功能参数快速解答' },
       { id: 'contact', title: '找对接人', desc: '精准定位内部对接人' },
-      { id: 'policy', title: '查制度', desc: '销售/渠道制度一键速查' }
+      { id: 'policy', title: '查制度', desc: '销售/渠道制度一键速查' },
+      { id: 'warranty', title: '查维保', desc: '客户维保到期提醒、续约商机挖掘' },
+      { id: 'onsite-staff', title: '查驻场', desc: '项目驻场人员管理与现场服务跟踪' },
+      { id: 'supply-chain', title: '查排产/发货', desc: '查询合同排产与发货进度' }
     ]
   }
 ];
@@ -1673,6 +1725,7 @@ function renderModules(list) {
           <span class="meta-item"><b>来源</b> ${m.source}</span>
         </div>
         <div style="font-size:12px;color:var(--text-sub);margin-bottom:8px;">📌 ${m.scenario}</div>
+        ${m.tip ? `<div class="tip-box">💡 ${m.tip}</div>` : ''}
         <div class="q-label">推荐问法 · 点击复制</div>
         ${m.questions.map(q => `
           <button class="q-btn" onclick="event.stopPropagation();copyText('${q.text.replace(/'/g, "\\'")}')">
@@ -1698,7 +1751,6 @@ function renderModules(list) {
           ${m.screenshot ? '<div class="ai-screenshot-block"><img src="截图/'+m.screenshot+'" alt="'+m.name+' AI输出样例" loading="lazy"'+(m.hasModal ? ' onclick="event.stopPropagation();openModalById(\''+m.id+'\')"' : '')+'></div>' : m.aiPreview}
           ${m.hasModal ? '<div style="margin-top:8px;font-size:11px;color:var(--primary);cursor:pointer;font-weight:500" onclick="event.stopPropagation();openModalById(\''+m.id+'\')"><svg width="11" height="11" style="vertical-align:-1px"><use href="#i-eye"/></svg> 查看完整输出示例</div>' : ''}
         </div>` : ''}
-        ${m.tip ? `<div class="tip-box">💡 ${m.tip}</div>` : ''}
         <div class="perm-row">
           🔒 使用权限：<span class="perm-tag ${m.perm === 'all' ? 'all' : 'apply'}">${m.permText}</span>
           ${m.perm === 'apply' ? '<span style="font-size:10px">如需开通请联系技术支持</span>' : ''}
@@ -1889,7 +1941,7 @@ var cpPresets = {
   },
   case: {
     userMsg: '我需要杭州近三年金融行业的案例',
-    aiMsg: '共为您找到以下符合条件的合同案例（近三年杭州金融行业）：<br><br><b>项目名称1: 浙商证券股份有限公司</b><br>• 合同号: AH26-S05-0028<br>• 金额范围: 10-50万<br>• 客户名称：浙商证券股份有限公司<br>• 省份：浙江省<br>• 城市：杭州市<br>• 合同签约时间: 2026-05-27<br>• 商机一级行业：金融<br>• 商机二级行业：证券期货<br>• 产品列表：定制培训服务、市场服务<br><br><b>项目名称2: 北汽汽车金融（杭州）有限公司</b><br>• 合同号: AH26-S04-0107<br>• 金额范围: 10-50万<br>• 客户名称：北汽汽车金融（杭州）有限公司<br>• 省份：浙江省<br>• 城市：杭州市<br>• 合同签约时间: 2026-05-17<br>• 商机一级行业：金融<br>• 商机二级行业：金融其他<br>• 产品列表：安全咨询服务<br><br>如需下载合同复印件，请告诉我"下载"即可。'
+    aiMsg: '共为您找到以下符合条件的合同案例（近三年杭州金融行业）：<br><br><b>项目名称1: 浙商证券股份有限公司</b><br>• 合同号: AH26-S05-0028<br>• 金额范围: 10-50万<br>• 客户名称：浙商证券股份有限公司<br>• 省份：浙江省<br>• 城市：杭州市<br>• 合同签约时间: 2026-05-27<br>• 商机一级行业：金融<br>• 商机二级行业：证券期货<br>• 产品列表：定制培训服务、市场服务<br>•  附件可用：合同复印件✅ 中标通知书❌ 回单✅<br><br><b>项目名称2: 北汽汽车金融（杭州）有限公司</b><br>• 合同号: AH26-S04-0107<br>• 金额范围: 10-50万<br>• 客户名称：北汽汽车金融（杭州）有限公司<br>• 省份：浙江省<br>• 城市：杭州市<br>• 合同签约时间: 2026-05-17<br>• 商机一级行业：金融<br>• 商机二级行业：金融其他<br>• 产品列表：安全咨询服务<br><br>'
   },
   person: {
     userMsg: '查询具有CISP-CISO、PMP、CISAW的人员',
